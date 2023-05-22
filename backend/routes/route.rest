@@ -1,0 +1,22 @@
+POST http://localhost:3000/authentications/signup
+Content-Type: application/json
+
+{
+    "email": "deyug@gmail.com",
+    "password": "ydgusd_78290-d"
+}
+
+###
+
+POST http://localhost:3000/authentications/login/
+Content-Type: application/json
+
+{
+    "email": "deyug@gmail.com",
+    "password": "ydgusd_78290-d"
+}
+
+###
+DELETE http://localhost:3000/authentications/users/646b42a74f90e97174f698b9
+
+
