@@ -1,31 +1,50 @@
+'use strict';
+
+const authenticationsRouter = require('./routes/authentications');
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
-require('dotenv').config();
+const dotenv = require('dotenv');
 
-// connect to mongo database
-mongoose.connect(process.env.URL_MONGO_DB, { useNewUrlParser: true })
-const db = mongoose.connection
+dotenv.config();
+
+// Create Express app
+const app = express();
+
+// Connect to the MongoDB database
+mongoose.connect(process.env.URL_MONGO_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+
+mongoose.connection.on('error', (error) => {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+});
+
+mongoose.connection.once('open', () => {
+    console.log('Connected to Atlas-Mongo_Database');
+});
 
 
-// throw error while running and once when connected
-db.on('error', (error) => console.error(error))
-db.once('open', () => console.log('connected to Atlas-Mongo_Database'))
+// Middleware
+app.use(express.json());
 
-// 'app' --> express middleware
-// run database
-app.listen(3000, () => console.log('server started'));
-// allow server accept JSON
-app.use(express.json())
+// Routes
+app.use('/api/v1/authentications', authenticationsRouter);
 
-// setting route for our authentications API
-const authenticationsRouter = require('./routes/authentications')
-app.use('/authentications', authenticationsRouter)
+// Error handling middleware
+app.use((err, res) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
 
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server started on port ${port}`));
 
 // const multer = require('multer');
 // const userRoutes = require('./routes/userRoutes');
-// 
+//
 // const cors = require('cors');
 
 // // Additional code for setting up routes, middleware, and starting the server

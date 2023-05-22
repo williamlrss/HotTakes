@@ -1,4 +1,4 @@
-POST http://localhost:3000/authentications/signup
+POST http://localhost:3000/api/v1/authentications/signup
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/authentications/login/
+POST http://localhost:3000/api/v1/authentications/login/
 Content-Type: application/json
 
 {
@@ -17,6 +17,6 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/authentications/users/646b42a74f90e97174f698b9
+DELETE http://localhost:3000/api/v1/authentications/users/646bb53194f41d0a250eb5de
 
 

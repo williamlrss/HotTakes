@@ -1,4 +1,12 @@
+'use strict'
+
 const mongoose = require('mongoose');
+
+
+/**
+
+Mongoose schema for user authentication.
+*/
 
 const authenticationSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
@@ -6,3 +14,5 @@ const authenticationSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('User', authenticationSchema);
+
+// Next route --> ../services/authentications

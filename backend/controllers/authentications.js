@@ -1,73 +1,66 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/authentications');
+'use strict'
 
-// User login
+const authenticationService = require('../services/authentications');
+require('express-async-errors');
+require('dotenv').config();
+
+
+/**
+
+Logs in a user.
+@param {Object} req - The request object.
+@param {Object} res - The response object.
+*/
+
 const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid email' });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid password' });
-    }
-
-    const token = jwt.sign({ UserId: user._id }, 'secretKey');
-    res.status(200).json({ UserId: user._id, token });
+    const result = await authenticationService.loginUser(email, password);
+    res.status(200).json(result);
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(401).json({ error: error.message });
   }
 };
 
-// User signup
+
+/**
+
+Signs up a new user.
+@param {Object} req - The request object.
+@param {Object} res - The response object.
+*/
+
 const signupUser = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Missing email or password' });
-    }
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ error: 'Email already exists' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, password: hashedPassword });
-    await newUser.save();
-
-    res.status(201).json({ message: 'Subscription successful' });
+    const result = await authenticationService.signupUser(email, password);
+    res.status(201).json(result);
   } catch (error) {
-    console.error('Error during subscription:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(400).json({ error: error.message });
   }
 };
 
-// Delete user
+
+/**
+
+Deletes a user.
+@param {Object} req - The request object.
+@param {Object} res - The response object.
+*/
+
 const deleteUser = async (req, res) => {
+  const userId = req.params.id;
+
   try {
-    const userId = req.params.id;
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Delete the user from the database
-    await User.findByIdAndDelete(userId);
-
-    res.status(200).json({ message: 'User deleted successfully' });
+    const result = await authenticationService.deleteUser(userId);
+    res.status(200).json(result);
   } catch (error) {
-    console.error('Error during user deletion:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(404).json({ error: error.message });
   }
 };
 
@@ -76,3 +69,5 @@ module.exports = {
   signupUser,
   deleteUser,
 };
+
+// Next route --> ../routes/authentications
