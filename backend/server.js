@@ -1,15 +1,18 @@
 'use strict';
 
 const authenticationsRouter = require('./routes/authentications');
+const saucesRouter = require('./routes/sauces');
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
+
 
 dotenv.config();
 
 // Create Express app
 const app = express();
-
+app.use(cors());
 // Connect to the MongoDB database
 mongoose.connect(process.env.URL_MONGO_DB, {
     useNewUrlParser: true,
@@ -30,7 +33,8 @@ mongoose.connection.once('open', () => {
 app.use(express.json());
 
 // Routes
-app.use('/api/v1/authentications', authenticationsRouter);
+app.use('/api/auth', authenticationsRouter);
+app.use('/api/sauces', saucesRouter);
 
 // Error handling middleware
 app.use((err, res) => {

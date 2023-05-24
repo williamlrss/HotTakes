@@ -42,7 +42,7 @@ Signs up a new user with the provided email and password.
 @throws {Error} If the email already exists.
 */
 
-const signupUser = async (email, password) => {
+const createUser = async (email, password) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         throw new Error('Email already exists');
@@ -77,7 +77,7 @@ const deleteUser = async (userId) => {
 
 module.exports = {
     loginUser,
-    signupUser,
+    createUser,
     deleteUser,
 };
 

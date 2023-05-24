@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/v1/authentications/signup
+POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/v1/authentications/login/
+POST http://localhost:3000/api/auth/login/
 Content-Type: application/json
 
 {
@@ -17,6 +17,17 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/api/v1/authentications/users/646bb53194f41d0a250eb5de
+DELETE http://localhost:3000/api/auth/users/646bd25cbe227f3e42f6b2c1
 
+###
 
+POST http://localhost:3000/api/sauces/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2NDZkYzZiMTM4ZThmM2Q5MzExN2Y2NTIiLCJpYXQiOjE2ODQ5MTU4OTIsImV4cCI6MTY4NDkxOTQ5Mn0.rfeyJbHiF3t6oZDRr2VLBEAtPdnNTpdYI5FiqH_VkPc
+
+{
+  "name": "Spicy Tomato Sauce",
+  "description": "A delicious and spicy tomato sauce",
+  "imageUrl": "https://example.com/sauce.jpg",
+  "heatLevel": 3
+}

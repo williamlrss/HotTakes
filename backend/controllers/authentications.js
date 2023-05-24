@@ -36,7 +36,7 @@ const signupUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const result = await authenticationService.signupUser(email, password);
+    const result = await authenticationService.createUser(email, password);
     res.status(201).json(result);
   } catch (error) {
     console.error(error);
