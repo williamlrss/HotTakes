@@ -4,7 +4,6 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const cors = require('cors');
-const connectDB = require('./mongo');
 require('express-async-errors');
 
 // Create Express app
