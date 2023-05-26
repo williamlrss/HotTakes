@@ -1,26 +1,11 @@
-// const express = require('express');
-// const router = express.Router();
-// const upload = require('../path/to/upload.js');
+'use strict';
 
-// // Handle the file upload
-// router.post('/upload', upload.single('image'), (req, res) => {
-//   // Access the uploaded file through req.file
-//   console.log(req.file);
-
-//   // Handle further processing or response
-//   res.json({ message: 'File uploaded successfully' });
-// });
-
-// module.exports = router;
-
-'use strict'
+const express = require('express');
+const router = express.Router();
 
 const saucesController = require('../controllers/sauces');
 const multer = require('../middleware/multer');
 const authenticate = require('../middleware/authenticate');
-const express = require('express');
-const router = express.Router();
-
 
 router.get('/', authenticate, saucesController.getAllSauces);
 router.get('/:id', authenticate, saucesController.getOneSauce);

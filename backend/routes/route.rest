@@ -2,8 +2,8 @@ POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
-    "email": "deyug@gmail.com",
-    "password": "ydgusd_78290-d"
+    "email": "a@a.com",
+    "password": "aaa"
 }
 
 ###
@@ -12,8 +12,8 @@ POST http://localhost:3000/api/auth/login/
 Content-Type: application/json
 
 {
-    "email": "deyug@gmail.com",
-    "password": "ydgusd_78290-d"
+    "email": "a@a.com",
+    "password": "aaa"
 }
 
 ###
@@ -21,9 +21,15 @@ DELETE http://localhost:3000/api/auth/users/646bd25cbe227f3e42f6b2c1
 
 ###
 
+GET http://localhost:3000/api/sauces/
+Content-Type: application/json
+Authorization: Bearer 64707e46d18f93d14291bcdf.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDcwN2U0NmQxOGY5M2QxNDI5MWJjZGYiLCJpYXQiOjE2ODUwOTUwNDYsImV4cCI6MTY4NTA5ODY0Nn0.ohqYD5x1wApG0qRya7-nOjihk1BTsgiWtr7v793sIiQ
+
+###
+
 POST http://localhost:3000/api/sauces/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2NDZkYzZiMTM4ZThmM2Q5MzExN2Y2NTIiLCJpYXQiOjE2ODQ5MTU4OTIsImV4cCI6MTY4NDkxOTQ5Mn0.rfeyJbHiF3t6oZDRr2VLBEAtPdnNTpdYI5FiqH_VkPc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDZlNjlkNGMxM2JmZDdmNTA1YmE5MDUiLCJpYXQiOjE2ODUwMzA5MTksImV4cCI6MTY4NTAzNDUxOX0.nhYl_wcUa6bca9DhcTB9ViSMpJBiVyT10alMKJPZ3S4
 
 {
   "name": "Spicy Tomato Sauce",

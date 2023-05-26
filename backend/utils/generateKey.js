@@ -21,4 +21,4 @@ function generateSecretKey() {
   return secretKey;
 }
 
-module.exports = generateSecretKey;
+generateSecretKey();
