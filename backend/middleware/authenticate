@@ -1,6 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
+const logger = require('../winston');
 require('dotenv').config();
 
 const authenticate = async (req, res, next) => {
@@ -21,7 +22,7 @@ const authenticate = async (req, res, next) => {
     // Proceed to the next middleware or route handler
     next();
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return res.status(401).json({ error: 'Invalid token' });
   }
 };

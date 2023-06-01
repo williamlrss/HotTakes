@@ -1,8 +1,11 @@
-const mongoose = require('mongoose');
-require('mongoose-mongodb-errors');
-const uniqueValidator = require('mongoose-unique-validator');
-const logger = require('../winston');
+const mongoose = require('mongoose'); // Importing mongoose for MongoDB interactions
+const uniqueValidator = require('mongoose-unique-validator'); // Importing mongoose-unique-validator for unique field validation
+const logger = require('../winston'); // Importing the Winston logger
 
+/**
+
+Mongoose schema for user authentication.
+*/
 const sauceSchema = new mongoose.Schema(
   {
     userId: { type: String, required: true },
@@ -20,7 +23,7 @@ const sauceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-sauceSchema.plugin(uniqueValidator);
+sauceSchema.plugin(uniqueValidator); // Ensure fields do not have duplicate
 
 const Sauce = mongoose.model('Sauce', sauceSchema);
 logger.info('Sauce model created');

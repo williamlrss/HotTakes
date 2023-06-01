@@ -1,75 +1,96 @@
+
 'use strict';
 
-const User = require('../models/authentications');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const logger = require('../winston');
-require('express-async-errors');
-require('dotenv').config();
+const User = require('../models/authentications'); // Importing the User model
+const bcrypt = require('bcrypt'); // Importing bcrypt for password hashing
+const jwt = require('jsonwebtoken'); // Importing jsonwebtoken for authentication tokens
+const logger = require('../winston'); // Importing the Winston logger
+require('express-async-errors'); // Importing the async error handling middleware for Express
+require('dotenv').config(); // Load environment variables from the .env file
+const validator = require('validator'); // Importing the validator library for input validation
 
 /**
- * Logs in a user with the provided email and password.
- * @param {string} email - The user's email.
- * @param {string} password - The user's password.
- * @returns {Object} An object containing the user ID and authentication token.
- * @throws {Error} If the email or password is invalid.
- */
+
+Logs in a user with the provided email and password.
+@param {string} email - The user's email.
+@param {string} password - The user's password.
+@returns {Object} An object containing the user ID and authentication token.
+@throws {Error} If the email or password is invalid.
+*/
 const loginUser = async (email, password) => {
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    throw new Error('Invalid email or password');
-  }
-
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    throw new Error('Invalid email or password');
-  }
-
-  const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' });
-
-  return { userId: user._id, token };
+    try {
+        const user = await User.findOne({ email }); // Find the user by email
+        if (!user) {
+            throw new Error('Invalid email or password');
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password); // Compare the provided password with the hashed password in the database
+        if (!isPasswordValid) {
+            throw new Error('Invalid email or password');
+        }
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+            expiresIn: '1h',
+        }); // Generate a JWT token for authentication
+        return { userId: user._id, token };
+    } catch (error) {
+        logger.error('Error in loginUser:', error);
+        throw error;
+    }
 };
 
 /**
- * Signs up a new user with the provided email and password.
- * @param {string} email - The user's email.
- * @param {string} password - The user's password.
- * @returns {Object} An object containing a success message.
- * @throws {Error} If the email already exists.
- */
+
+Signs up a new user with the provided email and password.
+@param {string} email - The user's email.
+@param {string} password - The user's password.
+@returns {Object} An object containing a success message.
+@throws {Error} If the email already exists or has an invalid format.
+*/
 const createUser = async (email, password) => {
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    throw new Error('Email already exists');
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new User({ email, password: hashedPassword });
-  await newUser.save();
-
-  return { message: 'User registration successful' };
+    try {
+        const existingUser = await User.findOne({ email }); // Check if the email already exists
+        if (existingUser) {
+            throw new Error('Email already exists');
+        }
+        if (!validator.isEmail(email)) {
+            throw new Error('Invalid email format');
+        }
+        if (!validator.isStrongPassword(password)) {
+            throw new Error(
+                'The password must contain 8 digits, one uppercase letter and a special characters'
+            );
+        }
+        const newUser = new User({ email, password }); // Create a new user instance
+        await newUser.save(); // Save the new user to the database
+        return { message: 'User registration successful' };
+    } catch (error) {
+        logger.error('Error in createUser:', error);
+        throw error;
+    }
 };
 
 /**
- * Deletes a user with the specified user ID.
- * @param {string} userId - The ID of the user to delete.
- * @returns {Object} An object containing a success message.
- * @throws {Error} If the user is not found.
- */
+
+Deletes a user with the specified user ID.
+@param {string} userId - The ID of the user to delete.
+@returns {Object} An object containing a success message.
+@throws {Error} If the user is not found.
+*/
 const deleteUser = async (userId) => {
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new Error('User not found');
-  }
-
-  await User.findByIdAndDelete(userId);
-
-  return { message: 'User deleted successfully' };
+    try {
+        const user = await User.findById(userId); // Find the user by ID
+        if (!user) {
+            throw new Error('User not found');
+        }
+        await User.findByIdAndDelete(userId); // Delete the user from the database
+        return { message: 'User deleted successfully' };
+    } catch (error) {
+        logger.error('Error in deleteUser:', error);
+        throw error;
+    }
 };
 
 module.exports = {
-  loginUser,
-  createUser,
-  deleteUser,
-};
+    loginUser,
+    createUser,
+    deleteUser,
+}; // Export the authentication service functions for external use

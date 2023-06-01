@@ -2,8 +2,8 @@ POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
-    "email": "a@a.com",
-    "password": "aaa"
+    "email": "john.doe2@outlook.com",
+    "password": "Cc123456789ù%"
 }
 
 ###
@@ -12,24 +12,24 @@ POST http://localhost:3000/api/auth/login/
 Content-Type: application/json
 
 {
-    "email": "a@a.com",
-    "password": "aaa"
+    "email": "john.doe2@outlook.com",
+    "password": "Cc123456789ù%"
 }
 
 ###
-DELETE http://localhost:3000/api/auth/users/646bd25cbe227f3e42f6b2c1
+DELETE http://localhost:3000/api/auth/users/6472541e1385bd7124cb35fe
 
 ###
 
 GET http://localhost:3000/api/sauces/
 Content-Type: application/json
-Authorization: Bearer 64707e46d18f93d14291bcdf.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDcwN2U0NmQxOGY5M2QxNDI5MWJjZGYiLCJpYXQiOjE2ODUwOTUwNDYsImV4cCI6MTY4NTA5ODY0Nn0.ohqYD5x1wApG0qRya7-nOjihk1BTsgiWtr7v793sIiQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDcyNTQxZTEzODViZDcxMjRjYjM1ZmUiLCJpYXQiOjE2ODUyMTQyNDcsImV4cCI6MTY4NTIxNzg0N30.SP2Sc7dFJ7CMWFgz24iMFL5nlVLjghe6T7Hqj6_e1N4
 
 ###
 
 POST http://localhost:3000/api/sauces/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDZlNjlkNGMxM2JmZDdmNTA1YmE5MDUiLCJpYXQiOjE2ODUwMzA5MTksImV4cCI6MTY4NTAzNDUxOX0.nhYl_wcUa6bca9DhcTB9ViSMpJBiVyT10alMKJPZ3S4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDcwN2U0NmQxOGY5M2QxNDI5MWJjZGYiLCJpYXQiOjE2ODUwOTUwOTgsImV4cCI6MTY4NTA5ODY5OH0.wyVLr256cmJ2Qs89uCQq3MOlT7wdblKHAWzJdVyAt-0
 
 {
   "name": "Spicy Tomato Sauce",
@@ -37,3 +37,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDZlN
   "imageUrl": "https://example.com/sauce.jpg",
   "heatLevel": 3
 }
+
+###
+
+DELETE  http://localhost:3000/api/sauces/647086f45b0c9af333f0f2da
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDcwN2U0NmQxOGY5M2QxNDI5MWJjZGYiLCJpYXQiOjE2ODUxMDAxOTksImV4cCI6MTY4NTEwMzc5OX0.vUVcRC7WFEniyneZnL-Lwwn5DTMl7rhYbeWGu5AGCZE

@@ -1,14 +1,16 @@
-'use strict'
+'use strict';
 
-const authenticationsController = require('../controllers/authentications');
-const express = require('express');
-const router = express.Router();
+const authenticationsController = require('../controllers/authentications'); // Importing the authentications controller
+const express = require('express'); // Importing Express framework
+const router = express.Router(); // Creating a router instance
 
-// User routes endpoints
-router.post('/login', authenticationsController.loginUser);
-router.post('/signup', authenticationsController.signupUser);
-router.delete('/users/:id', authenticationsController.deleteUser);
+/**
 
-module.exports = router;
+User routes endpoints
+*/
+router.post('/login', authenticationsController.loginUser); // Endpoint to handle user login
+router.post('/signup', authenticationsController.signupUser); // Endpoint to handle user signup
+router.delete('/users/:id', authenticationsController.deleteUser); // Endpoint to handle user deletion
+module.exports = router; // Export the router for external use
 
-// end point for authentications --> ../server
+// Endpoint for authentications: ../server

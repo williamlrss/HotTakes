@@ -1,28 +1,25 @@
 'use strict';
 
-const app = require('./app');
-const logger = require('./winston');
-const connectDB = require('./mongo');
-require('express-async-errors');
+const app = require('./app'); // Importing the Express application
+const logger = require('./winston'); // Importing the Winston logger
+const connectDB = require('./mongo'); // Importing the database connection utility
+require('express-async-errors'); // Importing the async error handling middleware for Express
 
+/**
+
+Function to start the server
+*/
 const startServer = async () => {
     try {
-        await connectDB();
-        const port = process.env.PORT || 3000;
-        app.listen(port, () => logger.info(`Server started on port ${port}`));
+        await connectDB(); // Connecting to the database
+        const port = process.env.PORT || 3000; // Setting the port for the server
+        app.listen(port, () => logger.info(`Server started on port ${ port }`)); // Starting the server
     } catch (error) {
-        logger.error('Failed to start the server:', error);
-        process.exit(1);
+        logger.error('Failed to start the server:', error); // Logging the error if server startup fails
+        process.exit(1); // Exiting the process with a failure code
     }
 };
-
 startServer().catch((error) => {
-    logger.error('An unhandled error occurred during server startup:', error);
-    process.exit(1);
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    logger.error('An error occurred:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    logger.error('An unhandled error occurred during server startup:', error); // Logging the unhandled error during server startup
+    process.exit(1); // Exiting the process with a failure code
 });
