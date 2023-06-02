@@ -2,7 +2,7 @@
 
 // Import required modules
 const Sauce = require('../models/sauces'); // Import the Sauce model
-const logger = require('../winston'); // Import the logger module
+const logger = require('../utils/winston'); // Import the logger module
 const fsPromises = require('fs').promises; // Import the fsPromises module for file operations
 require('express-async-errors'); // Import express-async-errors to handle asynchronous errors in Express
 

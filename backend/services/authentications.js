@@ -4,38 +4,10 @@
 const User = require('../models/authentications'); // Importing the User model
 const bcrypt = require('bcrypt'); // Importing bcrypt for password hashing
 const jwt = require('jsonwebtoken'); // Importing jsonwebtoken for authentication tokens
-const logger = require('../winston'); // Importing the Winston logger
+const logger = require('../utils/winston'); // Importing the Winston logger
 require('express-async-errors'); // Importing the async error handling middleware for Express
 require('dotenv').config(); // Load environment variables from the .env file
 const validator = require('validator'); // Importing the validator library for input validation
-
-/**
-
-Logs in a user with the provided email and password.
-@param {string} email - The user's email.
-@param {string} password - The user's password.
-@returns {Object} An object containing the user ID and authentication token.
-@throws {Error} If the email or password is invalid.
-*/
-const loginUser = async (email, password) => {
-    try {
-        const user = await User.findOne({ email }); // Find the user by email
-        if (!user) {
-            throw new Error('Invalid email or password');
-        }
-        const isPasswordValid = await bcrypt.compare(password, user.password); // Compare the provided password with the hashed password in the database
-        if (!isPasswordValid) {
-            throw new Error('Invalid email or password');
-        }
-        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-            expiresIn: '1h',
-        }); // Generate a JWT token for authentication
-        return { userId: user._id, token };
-    } catch (error) {
-        logger.error('Error in loginUser:', error);
-        throw error;
-    }
-};
 
 /**
 
@@ -64,6 +36,34 @@ const createUser = async (email, password) => {
         return { message: 'User registration successful' };
     } catch (error) {
         logger.error('Error in createUser:', error);
+        throw error;
+    }
+};
+
+/**
+
+Logs in a user with the provided email and password.
+@param {string} email - The user's email.
+@param {string} password - The user's password.
+@returns {Object} An object containing the user ID and authentication token.
+@throws {Error} If the email or password is invalid.
+*/
+const loginUser = async (email, password) => {
+    try {
+        const user = await User.findOne({ email }); // Find the user by email
+        if (!user) {
+            throw new Error('Invalid email or password');
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password); // Compare the provided password with the hashed password in the database
+        if (!isPasswordValid) {
+            throw new Error('Invalid email or password');
+        }
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+            expiresIn: '1h',
+        }); // Generate a JWT token for authentication
+        return { userId: user._id, token };
+    } catch (error) {
+        logger.error('Error in loginUser:', error);
         throw error;
     }
 };

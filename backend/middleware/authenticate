@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const logger = require('../winston');
+const logger = require('../utils/winston');
 require('dotenv').config();
 
 const authenticate = async (req, res, next) => {

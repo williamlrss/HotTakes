@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/api/auth/users/6472541e1385bd7124cb35fe
+DELETE http://localhost:3000/api/auth/delete/6472541e1385bd7124cb35fe
 
 ###
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('./app'); // Importing the Express application
-const logger = require('./winston'); // Importing the Winston logger
+const logger = require('./utils/winston'); // Importing the Winston logger
 const connectDB = require('./mongo'); // Importing the database connection utility
 require('express-async-errors'); // Importing the async error handling middleware for Express
 

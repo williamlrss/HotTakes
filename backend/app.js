@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express'); // Importing Express framework
+const logger = require('./utils/winston')
 const rateLimit = require('express-rate-limit'); // Importing rate limiting middleware for Express
 const path = require('path'); // Importing the path module
 const cors = require('cors'); // Importing the CORS middleware

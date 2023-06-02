@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose'); // Importing Mongoose for MongoDB interaction
-const logger = require('./winston'); // Importing the Winston logger
+const logger = require('./utils/winston'); // Importing the Winston logger
 const dotenv = require('dotenv'); // Importing dotenv for environment variable configuration
 require('express-async-errors'); // Importing the async error handling middleware for Express
 

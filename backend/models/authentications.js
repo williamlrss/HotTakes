@@ -3,7 +3,7 @@
 const mongoose = require('mongoose'); // Importing mongoose for MongoDB interactions
 const uniqueValidator = require('mongoose-unique-validator'); // Importing mongoose-unique-validator for unique field validation
 const bcrypt = require('bcrypt'); // Importing bcrypt for password hashing
-const logger = require('../winston'); // Importing the Winston logger
+const logger = require('../utils/winston'); // Importing the Winston logger
 
 /**
 
