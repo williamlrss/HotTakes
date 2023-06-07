@@ -28,9 +28,11 @@ const createUser = async (email, password) => {
         }
         if (!validator.isStrongPassword(password)) {
             throw new Error(
-                'The password must contain 8 digits, one uppercase letter and a special characters'
+                'The password must contain at least 8 digits, one uppercase letter and one special character'
             );
         }
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
         const newUser = new User({ email, password }); // Create a new user instance
         await newUser.save(); // Save the new user to the database
         return { message: 'User registration successful' };
@@ -52,11 +54,11 @@ const loginUser = async (email, password) => {
     try {
         const user = await User.findOne({ email }); // Find the user by email
         if (!user) {
-            throw new Error('Invalid email or password');
+            throw new Error('Invalid email || User unknown, please signup');
         }
         const isPasswordValid = await bcrypt.compare(password, user.password); // Compare the provided password with the hashed password in the database
         if (!isPasswordValid) {
-            throw new Error('Invalid email or password');
+            throw new Error('Wrong password');
         }
         const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
             expiresIn: '1h',

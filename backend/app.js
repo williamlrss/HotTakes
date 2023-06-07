@@ -17,7 +17,6 @@ Create Express app
 const app = express();
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON request bodies
-app.use(express.static('./public/uploads/sauces')); // Serve static files from the specified directory
 
 /**
 
@@ -56,7 +55,7 @@ Error handling middleware
 */
 app.use((err, req, res, next) => {
   logger.error('An error occurred:', err); // Logging the error
-  res.status(500).json({ error: 'Internal Server Error' }); // Sending an Internal Server Error response
+  res.status(500).json({ error: 'Issues from our server, please refresh the page and try again' }); // Sending an Internal Server Error response
 });
 
 module.exports = app; // Export the Express app for external use

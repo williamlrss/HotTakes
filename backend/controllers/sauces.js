@@ -45,10 +45,10 @@ const createSauce = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, // Generate the image URL based on the request protocol, host, and file name
         });
         await sauce.save(); // Save the new sauce to the database
-        res.status(201).json({ message: 'Sauce enregistrée !' }); // Return a success message
+        res.status(201).json({ message: 'Sauce registered !' }); // Return a success message
     } catch (error) {
         logger.error('Error in createSauce:', error);
-        res.status(400).json({ error: 'Bad request' });
+        res.status(400).json({ error: 'Invalid sauce format' });
     }
 };
 
@@ -60,7 +60,7 @@ const updateSauce = async (req, res) => {
             return res.status(404).json({ error: 'Sauce not found' }); // Return an error response if the sauce is not found
         }
         if (req.auth.userId !== sauce.userId) {
-            return res.status(403).json({ message: 'Non autorisé !' }); // Return an error response if the user is not authorized
+            return res.status(403).json({ message: 'Wrong user for this sauce' }); // Return an error response if the user is not authorized
         }
         if (req.file) {
             const filename = sauce.imageUrl.split('/').pop(); // Get the file name from the imageUrl property
@@ -69,7 +69,7 @@ const updateSauce = async (req, res) => {
         }
         Object.assign(sauce, req.body); // Update the sauce object with the request body
         await sauce.save(); // Save the updated sauce to the database
-        res.status(200).json({ message: 'Sauce modifiée !' }); // Return a success message
+        res.status(200).json({ message: 'Sauce updated' }); // Return a success message
     } catch (error) {
         logger.error('Error in updateSauce:', error);
         res.status(500).json({ error: 'Failed to update sauce' });
@@ -84,7 +84,7 @@ const deleteSauce = async (req, res) => {
             return res.status(404).json({ error: 'Sauce not found' }); // Return an error response if the sauce is not found
         }
         if (req.auth.userId !== sauce.userId) {
-            return res.status(403).json({ message: 'Non autorisé !' }); // Return an error response if the user is not authorized
+            return res.status(403).json({ message: 'Wrong user for this sauce' }); // Return an error response if the user is not authorized
         }
 
         const fileName = sauce.imageUrl.split('/').pop(); // Get the file name from the imageUrl property
@@ -92,7 +92,7 @@ const deleteSauce = async (req, res) => {
         await fsPromises.unlink(`images/${fileName}`); // Delete the image file
 
         await sauce.deleteOne(); // Delete the sauce from the database
-        res.status(200).json({ message: 'Sauce supprimée !' }); // Return a success message
+        res.status(200).json({ message: 'Sauce deleted' }); // Return a success message
     } catch (error) {
         logger.error('Error in deleteSauce:', error);
         res.status(500).json({ error: 'Failed to delete sauce' });
@@ -114,7 +114,7 @@ const likeSauce = async (req, res) => {
         if (like === 1) {
             if (usersLiked.includes(userId)) {
                 logger.error('Sauce already liked'); // Log an error if the sauce is already liked by the user
-                return res.status(401).json({ error: 'Sauce déjà likée' });
+                return res.status(401).json({ error: 'Sauce already liked' });
             }
             sauce.likes++;
             usersLiked.push(userId);

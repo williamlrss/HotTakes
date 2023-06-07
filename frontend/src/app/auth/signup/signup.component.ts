@@ -38,7 +38,7 @@ export class SignupComponent implements OnInit {
       }),
       catchError(error => {
         this.loading = false;
-        this.errorMsg = error.message;
+        this.errorMsg = `${JSON.stringify(error.error.error)}`.replace(/"/g, '');
         return EMPTY;
       })
     ).subscribe();

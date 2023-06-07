@@ -14,16 +14,11 @@ Function to connect to the MongoDB database
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.URL_MONGO_DB);
-    logger.info('Connected to Atlas-Mongo_Database');
 
-    const databaseName = mongoose.connection.name;
     const collections = mongoose.connection.collections;
-
-    console.log('Database Name:', databaseName);
-
-    for (const collectionName in collections) {
-      console.log(`Acquired collection: ${collectionName}`);
-    }
+    const collectionNames = Object.keys(collections);
+    
+    logger.info(`Connected to Atlas Mongo_Db | name: HOT-TAKES | collections: ${collectionNames.join(', ')}`);
   } catch (error) {
     logger.error('MongoDB connection error:', error);
     process.exit(1);
