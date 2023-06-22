@@ -5,6 +5,11 @@ const logger = require('./utils/winston'); // Importing the Winston logger
 const connectDB = require('./mongo'); // Importing the database connection utility
 require('express-async-errors'); // Importing the async error handling middleware for Express
 
+const { EventEmitter } = require('events');
+
+// Increase the limit for the EventEmitter
+EventEmitter.defaultMaxListeners = 15;
+
 /**
 
 Function to start the server
