@@ -8,10 +8,15 @@ const getAllSauces = async () => {
 };
 
 const getOneSauce = async (id) => {
-	if (!mongoose.Types.ObjectId.isValid(id)) {
-		throw new Error('Invalid ID format');
+	try {
+		if (!mongoose.Types.ObjectId.isValid(id)) {
+			throw new Error('Invalid ID format');
+		}
+		return await Sauce.findById(id);
+	} catch (error) {
+		logger.error('In getOneSauce service: ', error);
+		throw error;
 	}
-	return await Sauce.findById(id);
 };
 
 const createSauce = async (sauceData, imageUrl) => {
@@ -20,6 +25,8 @@ const createSauce = async (sauceData, imageUrl) => {
 
 		if (!userId) {
 			throw new Error('User ID is required');
+		} else if (!imageUrl) {
+			throw new Error('Image file is required'); // need test
 		}
 
 		const sauce = new Sauce({
@@ -53,6 +60,7 @@ const updateSauce = async (id, userId, sauceData, imageUrl) => {
 		Object.assign(sauce, sauceData);
 		return await sauce.save();
 	} catch (error) {
+		logger.error('In updateSauce service: ', error);
 		throw error;
 	}
 };
@@ -60,7 +68,7 @@ const updateSauce = async (id, userId, sauceData, imageUrl) => {
 const deleteSauce = async (id) => {
 	try {
 		if (!mongoose.Types.ObjectId.isValid(id)) {
-			throw new Error('Invalid ID format');
+			throw new Error('Invalid ID format'); // need test (int)
 		}
 
 		const sauce = await Sauce.findById(id);
@@ -77,6 +85,7 @@ const deleteSauce = async (id) => {
 		 * Database function: delete sauce
 		 */
 	} catch (error) {
+		logger.error('In deleteSauce service: ', error);
 		throw error;
 	}
 };
@@ -112,13 +121,12 @@ const likeSauce = async (id, like, userId) => {
 		} else if (like === 0 && sauce.usersLiked.includes(userId)) {
 			sauce.usersLiked.pull(userId);
 		} else if (like === 0 && sauce.usersDisliked.includes(userId)) {
-			// line 114
 			sauce.usersDisliked.pull(userId);
 		}
 
 		sauce.likes = sauce.usersLiked.length;
 		sauce.dislikes = sauce.usersDisliked.length;
-		// console.log(sauce);
+
 		return await sauce.save();
 
 		/**
