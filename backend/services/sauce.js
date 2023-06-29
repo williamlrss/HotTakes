@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+require('mongoose');
 const Sauce = require('../models/sauce');
 const fsPromises = require('fs').promises;
 const logger = require('../utils/winston');
@@ -9,12 +9,11 @@ const getAllSauces = async () => {
 
 const getOneSauce = async (id) => {
 	try {
-		if (!mongoose.Types.ObjectId.isValid(id)) {
+		if (!/^[0-9a-fA-F]{24}$/.test(id)) {
 			throw new Error('Invalid ID format');
 		}
 		return await Sauce.findById(id);
 	} catch (error) {
-		logger.error('In getOneSauce service: ', error);
 		throw error;
 	}
 };
@@ -26,7 +25,7 @@ const createSauce = async (sauceData, imageUrl) => {
 		if (!userId) {
 			throw new Error('User ID is required');
 		} else if (!imageUrl) {
-			throw new Error('Image file is required'); // need test
+			throw new Error('Image file is required'); // need unit test
 		}
 
 		const sauce = new Sauce({
@@ -36,14 +35,13 @@ const createSauce = async (sauceData, imageUrl) => {
 
 		return await sauce.save();
 	} catch (error) {
-		logger.error('In createSauce service: ', error);
 		throw error;
 	}
 };
 
 const updateSauce = async (id, userId, sauceData, imageUrl) => {
 	try {
-		if (!mongoose.Types.ObjectId.isValid(id)) {
+		if (!/^[0-9a-fA-F]{24}$/.test(id)) {
 			throw new Error('Invalid ID format');
 		}
 		const sauce = await Sauce.findById(id);
@@ -60,15 +58,14 @@ const updateSauce = async (id, userId, sauceData, imageUrl) => {
 		Object.assign(sauce, sauceData);
 		return await sauce.save();
 	} catch (error) {
-		logger.error('In updateSauce service: ', error);
 		throw error;
 	}
 };
 
 const deleteSauce = async (id) => {
 	try {
-		if (!mongoose.Types.ObjectId.isValid(id)) {
-			throw new Error('Invalid ID format'); // need test (int)
+		if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+			throw new Error('Invalid ID format');
 		}
 
 		const sauce = await Sauce.findById(id);
@@ -85,14 +82,13 @@ const deleteSauce = async (id) => {
 		 * Database function: delete sauce
 		 */
 	} catch (error) {
-		logger.error('In deleteSauce service: ', error);
 		throw error;
 	}
 };
 
 const likeSauce = async (id, like, userId) => {
 	try {
-		if (!mongoose.Types.ObjectId.isValid(id)) {
+		if (!/^[0-9a-fA-F]{24}$/.test(id)) {
 			throw new Error('Invalid ID format');
 		}
 
@@ -103,8 +99,6 @@ const likeSauce = async (id, like, userId) => {
 		} else if (isNaN(like) || like > 1 || like < -1) {
 			throw new Error('Invalid like value');
 		}
-
-		// const { usersLiked, usersDisliked } = sauce;
 
 		if (
 			like === 1 &&
@@ -142,7 +136,6 @@ const likeSauce = async (id, like, userId) => {
 		 * Database function: save updated sauce
 		 */
 	} catch (error) {
-		logger.error('In likeSauce service: ', error);
 		throw error;
 	}
 };

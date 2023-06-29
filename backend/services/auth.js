@@ -3,7 +3,6 @@
 const User = require('../models/auth');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const logger = require('../utils/winston');
 require('dotenv').config();
 const validator = require('validator');
 
@@ -13,7 +12,9 @@ const createUser = async (email, password) => {
 			throw new Error('Invalid email format');
 		}
 		if (!validator.isStrongPassword(password)) {
-			throw new Error('The password must contain at least 8 characters, one uppercase letter, and one special character');
+			throw new Error(
+				'The password must contain at least 8 characters, one uppercase letter, and one special character'
+			);
 		}
 		const existingUser = await User.findOne({ email });
 		if (existingUser) {
@@ -27,7 +28,6 @@ const createUser = async (email, password) => {
 		await newUser.save();
 		return { message: 'User registration successful' };
 	} catch (error) {
-		logger.error('Error in createUser:', error);
 		throw error;
 	}
 };
@@ -47,7 +47,6 @@ const loginUser = async (email, password) => {
 		});
 		return { userId: user._id, token };
 	} catch (error) {
-		logger.error('Error in loginUser:', error);
 		throw error;
 	}
 };
@@ -61,7 +60,6 @@ const deleteUser = async (userId) => {
 		await User.findByIdAndDelete(userId);
 		return { message: 'User deleted successfully' };
 	} catch (error) {
-		logger.error('Error in deleteUser:', error);
 		throw error;
 	}
 };

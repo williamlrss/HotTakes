@@ -1,7 +1,6 @@
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const helmet = require('helmet');
-// const dompurify = require('dompurify');
 const hpp = require('hpp');
 
 const appMiddlewares = (express, app) => {
@@ -15,7 +14,6 @@ const appMiddlewares = (express, app) => {
 			},
 		})
 	);
-	// app.use(dompurify());
 	app.use(hpp());
 	const limiter = rateLimit({
 		windowMs: 15 * 60 * 1000,

@@ -37,15 +37,17 @@ describe('Authenticate Middleware', () => {
 		req.headers.authorization = undefined;
 		await authenticate(req, res, next);
 		expect(res.statusCode).to.be.equal(401);
-		expect(res._getJSONData()).to.be.eql({ error: 'No token provided' });
+		expect(res._getJSONData()).to.be.eql({ error: 'Authentication failed, try to reconnect' });
 		expect(next.called).to.be.false;
 	});
 
 	it('should return 401 if invalid token is provided', async () => {
 		jwt.verify.throws(new Error('Invalid token'));
 		await authenticate(req, res, next);
-		expect(res.statusCode).to.be.equal(401);
-		expect(res._getJSONData()).to.be.eql({ error: 'Invalid token' });
+		expect(res.statusCode).to.be.equal(403);
+		expect(res._getJSONData()).to.be.eql({
+			error: 'Wrong token or outdated after one hour, please reconnect',
+		});
 		expect(next.called).to.be.false;
 	});
 });

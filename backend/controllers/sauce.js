@@ -5,10 +5,10 @@ require('mongoose');
 const getAllSaucesController = async (req, res, next) => {
 	try {
 		const sauces = await sauceService.getAllSauces(); // Call the logic and validation function
+
 		res.status(200).json(sauces); // OK
 	} catch (error) {
-		// need test (int)
-		logger.error('In getAllSauces controller:', error);
+		logger.error(error);
 		next(error);
 	}
 };
@@ -16,12 +16,14 @@ const getAllSaucesController = async (req, res, next) => {
 const getOneSauceController = async (req, res, next) => {
 	try {
 		const sauce = await sauceService.getOneSauce(req.params.id); // Find sauce by id
+
 		if (!sauce) {
 			throw new Error('Sauce not found');
 		}
+
 		res.status(200).json(sauce); // OK
 	} catch (error) {
-		logger.error('In getOneSauce controller:', error);
+		logger.error(error);
 		next(error);
 	}
 };
@@ -29,11 +31,14 @@ const getOneSauceController = async (req, res, next) => {
 const createSauceController = async (req, res, next) => {
 	try {
 		const sauceData = JSON.parse(req.body.sauce);
+
 		const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`; // Set the image file destination
+
 		const sauce = await sauceService.createSauce(sauceData, imageUrl); // Call the logic and validation function
+
 		res.status(201).json(sauce); // Created
 	} catch (error) {
-		logger.error('In createSauce controller', error);
+		logger.error(error);
 		next(error);
 	}
 };
@@ -46,10 +51,12 @@ const updateSauceController = async (req, res, next) => {
 		if (req.file) {
 			imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
 		}
+
 		await sauceService.updateSauce(req.params.id, req.auth.userId, sauceData, imageUrl); // Call the logic and validation function
+
 		res.status(200).json({ message: 'Sauce updated' }); // OK
 	} catch (error) {
-		logger.error('In updateSauce controller:', error);
+		logger.error(error);
 		next(error);
 	}
 };
@@ -65,9 +72,10 @@ const deleteSauceController = async (req, res, next) => {
 		}
 
 		await sauceService.deleteSauce(req.params.id); // Call the logic and validation function
+
 		res.status(200).json({ message: 'Sauce deleted' }); // OK
 	} catch (error) {
-		logger.error('In deleteSauce controller:', error);
+		logger.error(error);
 		next(error);
 	}
 };
@@ -82,7 +90,7 @@ const likeSauceController = async (req, res, next) => {
 
 		res.status(200).json({ message: 'Like/dislike updated!' }); // OK
 	} catch (error) {
-		logger.error('In likeSauce controller:', error);
+		logger.error(error);
 		next(error);
 	}
 };
