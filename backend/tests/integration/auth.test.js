@@ -17,7 +17,7 @@ const deleteUser = async (userId) => {
 
 beforeAll(async () => {
 	// Connect to Mongo testing database
-	await mongoose.connect(process.env.URL_MONGO_DB_TEST);
+	await mongoose.connect(process.env.URL_MONGO_DB_USERS_INT_TEST);
 
 	// Clear the 'users' collection before running the tests
 	await mongoose.connection.collection('users').deleteMany();
@@ -25,7 +25,7 @@ beforeAll(async () => {
 	// Debug 'username_1' collection before running the tests
 	await mongoose.connection.collection('users').dropIndex('username_1', function (err, result) {
 		if (err) {
-			console.log('Error in dropping index:', err);
+			console.log('Just a necessary debug message');
 		}
 	});
 });
@@ -72,7 +72,7 @@ describe('authRoutes', () => {
 			// Create a user for strong password testing
 			const user = { email: 'validAuth.integration@test.com', password: 'Cc123456789ù%' };
 			const response = await createUser(user);
-			console.log(response.body);
+
 			expect(response.status).toBe(201);
 			expect(response.body.message).toBe('User registration successful');
 		});
@@ -117,7 +117,6 @@ describe('authRoutes', () => {
 			await createUser(userSignedUp);
 			const userLoginResponse = await loginUser(userSignedUp);
 			const userId = userLoginResponse.body.userId;
-			console.log(userId);
 
 			const response = await deleteUser(userId);
 			expect(response.status).toBe(200);

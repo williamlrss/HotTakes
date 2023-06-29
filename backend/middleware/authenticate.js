@@ -8,7 +8,9 @@ const authenticate = async (req, res, next) => {
 	// Get the authentication token from the request headers or query parameters
 
 	if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
-		return res.status(401).json({ error: 'No token provided' });
+		logger.error('No token provided');
+
+		return res.status(401).json({ error: 'Authentication failed, try to reconnect' });
 	}
 
 	try {
@@ -22,8 +24,10 @@ const authenticate = async (req, res, next) => {
 		// Proceed to the next middleware or route handler
 		next();
 	} catch (error) {
-		logger.error(error);
-		return res.status(401).json({ error: 'Invalid token' });
+		logger.error('invalid token', error);
+		return res
+			.status(403)
+			.json({ error: 'Wrong token or outdated after one hour, please reconnect' });
 	}
 };
 
