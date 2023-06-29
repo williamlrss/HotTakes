@@ -242,7 +242,7 @@ describe('Sauces routes', () => {
 	});
 
 	describe('PUT /api/sauces/:id', () => {
-		it('should return 400 when invalid ID format', async () => {
+		it('should return 404 when invalid ID format', async () => {
 			const sauceData = {
 				userId: userId,
 				name: 'Integration Test Sauce',
@@ -252,6 +252,20 @@ describe('Sauces routes', () => {
 				heat: 1,
 			};
 			const response = await updateSauce('invalidSauceId', sauceData);
+			expect(response.status).to.equal(404);
+			expect(response.body.error).to.equal('Sauce not found');
+		});
+
+		it('should return 404 when wrong sauceId', async () => {
+			const sauceData = {
+				userId: userId,
+				name: 'Integration Test Sauce',
+				manufacturer: 'Sauces route',
+				description: 'Update a sauce',
+				mainPepper: 'pepper',
+				heat: 1,
+			};
+			const response = await updateSauce(wrongSauceId, sauceData);
 			expect(response.status).to.equal(404);
 			expect(response.body.error).to.equal('Sauce not found');
 		});
@@ -269,20 +283,6 @@ describe('Sauces routes', () => {
 
 			expect(response.status).to.equal(403);
 			expect(response.body.error).to.equal('Wrong user for this sauce');
-		});
-
-		it('should return 404 when wrong sauceId', async () => {
-			const sauceData = {
-				userId: userId,
-				name: 'Integration Test Sauce',
-				manufacturer: 'Sauces route',
-				description: 'Update a sauce',
-				mainPepper: 'pepper',
-				heat: 1,
-			};
-			const response = await updateSauce(wrongSauceId, sauceData);
-			expect(response.status).to.equal(404);
-			expect(response.body.error).to.equal('Sauce not found');
 		});
 
 		it('should return 201 when updated without image', async () => {
@@ -314,6 +314,12 @@ describe('Sauces routes', () => {
 	});
 
 	describe('Delete /api/sauces/:id', () => {
+		it('should return 404 when invalid id format', async () => {
+			const response = await deleteSauce('invalidId');
+			expect(response.status).to.equal(404);
+			expect(response.body.error).to.equal('Sauce not found');
+		});
+
 		it('should return 404 when sauce not found', async () => {
 			const response = await deleteSauce(wrongSauceId);
 			expect(response.status).to.equal(404);
@@ -326,12 +332,6 @@ describe('Sauces routes', () => {
 			expect(response.body.error).to.equal('Wrong user for this sauce');
 		});
 
-		it('should return 400 when invalid id format', async () => {
-			const response = await deleteSauce('invalidId');
-			expect(response.status).to.equal(404);
-			expect(response.body.error).to.equal('Sauce not found');
-		});
-
 		it('should return 200 OK', async () => {
 			const response = await deleteSauce(sauceId);
 			expect(response.status).to.equal(200);
@@ -339,14 +339,14 @@ describe('Sauces routes', () => {
 	});
 
 	describe('POST /api/sauces/:id/like', () => {
-		it('should return 404 when sauce not found', async () => {
-			const response = await likeSauce(wrongSauceId, 1, userId);
+		it('should return 404 when invalid id format', async () => {
+			const response = await likeSauce('invalidId', 1, userId);
 			expect(response.status).to.equal(404);
 			expect(response.body.error).to.equal('Sauce not found');
 		});
 
-		it('should return 400 when invalid id format', async () => {
-			const response = await likeSauce('invalidId', 1, userId);
+		it('should return 404 when sauce not found', async () => {
+			const response = await likeSauce(wrongSauceId, 1, userId);
 			expect(response.status).to.equal(404);
 			expect(response.body.error).to.equal('Sauce not found');
 		});
